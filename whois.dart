@@ -7,10 +7,9 @@ void main(List<String> args) async {
 }
 
 class Domain {
-  static final RegExp _url = RegExp(r'(?:\w+:\/\/)?([\w-.]+).*');
+  static final RegExp _url = RegExp(r'(?:\w+://)?(?:[\w.:-]+@)?([\w.-]+).*');
 
-  String ext;
-  String name;
+  String ext, name;
 
   String get host {
     return '$name.$ext';
