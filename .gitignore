@@ -1,0 +1,10 @@
+*.iml
+*.lock
+/.dart_tool
+/.flutter-plugins
+/.idea
+/.packages
+/.pub
+/android/gen
+/build
+ic_logo*
