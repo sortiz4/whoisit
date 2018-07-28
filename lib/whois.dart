@@ -1,10 +1,5 @@
+import 'dart:async';
 import 'dart:io';
-
-void main(List<String> args) async {
-  if(args.length == 1) {
-    print(await WhoisClient.query(args[0]));
-  }
-}
 
 class Domain {
   static final RegExp _url = RegExp(r'(?:\w+://)?(?:[\w.:-]+@)?([\w.-]+).*');
@@ -21,7 +16,7 @@ class Domain {
 
     try {
       pieces = matches[0].group(1).split('.');
-    } on RangeError catch(exc) {
+    } on RangeError {
       throw FormatException('Invalid input format');
     }
 
@@ -36,7 +31,7 @@ class Domain {
 
 class WhoisClient {
   // Throws OSError (no such host)
-  static String query(String handle) async {
+  static Future<String> query(String handle) async {
     var domain = Domain(handle);
     var server = '${domain.ext}.whois-servers.net';
 
@@ -48,7 +43,7 @@ class WhoisClient {
       response.addAll(chunk);
     }
     client.destroy();
-  
+
     return String.fromCharCodes(response).trimRight();
   }
 }

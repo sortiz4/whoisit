@@ -1,0 +1,12 @@
+*.class
+*.iml
+/.gradle
+/.idea
+/build
+/captures
+/gen
+/gradle
+GeneratedPluginRegistrant.java
+gradlew
+gradlew.bat
+local.properties
