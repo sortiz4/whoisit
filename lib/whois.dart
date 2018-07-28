@@ -38,7 +38,7 @@ class WhoisClient {
     var client = await Socket.connect(server, 43);
     client.write('${domain.host}\r\n');
 
-    var response = List<int>();
+    var response = <int>[];
     await for(var chunk in client) {
       response.addAll(chunk);
     }
