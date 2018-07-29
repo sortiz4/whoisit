@@ -6,4 +6,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 flutter:
+  fonts:
+    - family: RobotoMono
+      fonts:
+        - asset: fonts/RobotoMono-Regular.ttf
   uses-material-design: true

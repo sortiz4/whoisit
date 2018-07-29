@@ -4,25 +4,23 @@ void main() {
   runApp(App());
 }
 
-class AppTheme {
+class App extends StatelessWidget {
   static final backgroundColor = const Color(0xFFEEEEEE);
   static final primaryColor = const Color(0xFF007DE6);
   static final shadowColor = const Color(0x33000000);
 
-  static final light = ThemeData(
+  static final theme = ThemeData(
     backgroundColor: backgroundColor,
     primaryColor: primaryColor,
     accentColor: primaryColor,
   );
-}
 
-class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: HomePage(),
       title: 'whoisit',
-      theme: AppTheme.light,
+      theme: theme,
     );
   }
 }
@@ -45,10 +43,14 @@ class HomePageState extends State<HomePage> {
         children: [
           SearchBar(),
           Expanded(
-            child: Center(
-              child: DefaultStatus(),
-              // child: Result(),
+            child: Align(
+              alignment: Alignment.topLeft,
+//                child: Result(),
+                child: History(),
             ),
+//            child: Center(
+//              child: DefaultStatus(),
+//            ),
           ),
         ],
       ),
@@ -114,20 +116,75 @@ class Status extends StatelessWidget {
   }
 }
 
-// Result displays a card containing plain text
-class Result extends StatelessWidget {
+class History extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Card(
+    return Scrollbar(
+      child: ListView(
+        padding: EdgeInsets.all(0.0),
+        children: [
+          ListTile(
+            leading: Icon(Icons.replay),
+            title: Text('google.com'),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Result displays a card containing plain text
+class Result extends StatelessWidget {
+  final String text;
+
+  Result({this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scrollbar(
+      child: SingleChildScrollView(
+        child: Card(
+          elevation: 2.0,
           margin: EdgeInsets.all(10.0),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Text('test'),
+          child: Column(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey[800],
+                ),
+                padding: EdgeInsets.all(10.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Response',
+                    style: Theme.of(context).textTheme.button.copyWith(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Scrollbar(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        text ?? 'test\n1234\nasdf',
+                        style: TextStyle(
+                          fontFamily: 'RobotoMono',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }
@@ -143,7 +200,7 @@ class SearchBar extends StatelessWidget {
         color: Theme.of(context).primaryColor,
         boxShadow: [
           BoxShadow(
-            color: AppTheme.shadowColor,
+            color: App.shadowColor,
             blurRadius: 1.0,
             spreadRadius: 1.0,
           ),
