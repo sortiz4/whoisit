@@ -4,13 +4,25 @@ void main() {
   runApp(App());
 }
 
+class AppTheme {
+  static final backgroundColor = const Color(0xFFEEEEEE);
+  static final primaryColor = const Color(0xFF007DE6);
+  static final shadowColor = const Color(0x33000000);
+
+  static final light = ThemeData(
+    backgroundColor: backgroundColor,
+    primaryColor: primaryColor,
+    accentColor: primaryColor,
+  );
+}
+
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: HomePage(),
-      color: const Color(0xFF007DE6),
       title: 'whoisit',
+      theme: AppTheme.light,
     );
   }
 }
@@ -25,28 +37,19 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() => _counter++);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
-        // Contents of the column must be reversed to cast a shadow
-        verticalDirection: VerticalDirection.up,
         children: [
+          SearchBar(),
           Expanded(
-            child: Container(
-              color: const Color(0xFFEEEEEE),
-              child: Center(
-                child: Default(counter: _counter),
-              ),
+            child: Center(
+              child: DefaultStatus(),
+              // child: Result(),
             ),
           ),
-          SearchBar(),
         ],
       ),
       bottomNavigationBar: new BottomNavigationBar(
@@ -61,37 +64,57 @@ class HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+    );
+  }
+}
+
+class ErrorStatus extends Status {
+  ErrorStatus({String text}) : super(
+    icon: Icons.error,
+    text: text,
+  );
+}
+
+class DefaultStatus extends Status {
+  DefaultStatus() : super(
+    icon: Icons.search,
+    text: 'Search for something...',
+  );
+}
+
+// Status displays an icon and a message
+class Status extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  Status({this.icon, this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Opacity(
+      opacity: 0.5,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(
+              icon,
+              size: Theme.of(context).textTheme.display2.fontSize,
+              color: Theme.of(context).textTheme.body2.color,
+            ),
+          ),
+          Text(
+            text,
+            style: Theme.of(context).textTheme.body2,
+          ),
+        ],
       ),
     );
   }
 }
 
-class Default extends StatelessWidget {
-  final int counter;
-
-  Default({this.counter});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'You have pushed the button this many times:',
-        ),
-        Text(
-          '$counter',
-          style: Theme.of(context).textTheme.display1,
-        ),
-      ],
-    );
-  }
-}
-
+// Result displays a card containing plain text
 class Result extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -120,7 +143,7 @@ class SearchBar extends StatelessWidget {
         color: Theme.of(context).primaryColor,
         boxShadow: [
           BoxShadow(
-            color: const Color(0x33000000),
+            color: AppTheme.shadowColor,
             blurRadius: 1.0,
             spreadRadius: 1.0,
           ),
