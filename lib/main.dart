@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'whois.dart';
 
 void main() {
   runApp(App());
@@ -18,43 +20,123 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
-      title: 'whoisit',
+      home: Home(),
       theme: theme,
+      title: 'whoisit',
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key key}) : super(key: key);
 
   @override
-  HomePageState createState() {
-    return HomePageState();
+  HomeState createState() {
+    return HomeState();
   }
 }
 
-class HomePageState extends State<HomePage> {
+class HomeState extends State<Home> {
+  static final int _searchTab = 0;
+  static final int _historyTab = 1;
+
+  final TextEditingController _controller = TextEditingController();
+  final List<String> _history = [];
+
+  Widget _searchChild = EmptySearchStatus();
+  int _activeTab = _searchTab;
+
+  set _child(Widget child) {
+    if(_activeTab == _searchTab) {
+      _searchChild = child;
+    }
+  }
+
+  Widget get _child {
+    if(_activeTab == _searchTab) {
+      return _searchChild;
+    }
+    return _historyChild;
+  }
+
+  Widget get _historyChild {
+    if(_history.length > 0) {
+      return History(_history, onHistory);
+    }
+    return EmptyHistoryStatus();
+  }
+
+  Alignment get _alignment {
+    if(_child is Status || _child is ProgressIndicator) {
+      return Alignment.center;
+    }
+    return Alignment.topLeft;
+  }
+
+  void onSearch(String query) async {
+    query = query.toLowerCase().trim();
+
+    if(query.length > 0) {
+      _activeTab = _searchTab;
+      try {
+        // Start the progress indicator
+        setState(() {
+          _child = CircularProgressIndicator();
+        });
+
+        // Wait for the response and update
+        var response = await WhoisClient.query(query);
+        setState(() {
+          _child = Result(response);
+          _history.add(query);
+        });
+      } on FormatException {
+        setState(() {
+          _child = ErrorStatus('Invalid domain format');
+        });
+      } on SocketException {
+        setState(() {
+          _child = ErrorStatus('Invalid domain extension');
+        });
+      } on Exception {
+        setState(() {
+          _child = ErrorStatus('An unknown error occurred');
+        });
+      }
+    }
+  }
+
+  void onNavigate(int tab) {
+    if(_activeTab != tab) {
+      setState(() => _activeTab = tab);
+    }
+  }
+
+  void onHistory(String query) {
+    setState(() => _controller.text = query);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: [
-          SearchBar(),
+          SearchBar(
+            controller: _controller,
+            onSubmitted: onSearch,
+          ),
           Expanded(
             child: Align(
-              alignment: Alignment.topLeft,
-//                child: Result(),
-                child: History(),
+              alignment: _alignment,
+              child: _child,
             ),
-//            child: Center(
-//              child: DefaultStatus(),
-//            ),
           ),
         ],
       ),
       bottomNavigationBar: new BottomNavigationBar(
+        currentIndex: _activeTab,
+        onTap: onNavigate,
         items: [
           new BottomNavigationBarItem(
             icon: const Icon(Icons.search),
@@ -71,14 +153,21 @@ class HomePageState extends State<HomePage> {
 }
 
 class ErrorStatus extends Status {
-  ErrorStatus({String text}) : super(
+  ErrorStatus(String text) : super(
     icon: Icons.error,
     text: text,
   );
 }
 
-class DefaultStatus extends Status {
-  DefaultStatus() : super(
+class EmptyHistoryStatus extends Status {
+  EmptyHistoryStatus() : super(
+    icon: Icons.info,
+    text: 'Your search history is empty',
+  );
+}
+
+class EmptySearchStatus extends Status {
+  EmptySearchStatus() : super(
     icon: Icons.search,
     text: 'Search for something...',
   );
@@ -117,18 +206,25 @@ class Status extends StatelessWidget {
 }
 
 class History extends StatelessWidget {
+  final List<String> history;
+  final ValueSetter<String> onTap;
+
+  History(this.history, this.onTap);
+
   @override
   Widget build(BuildContext context) {
+    var widgets = <Widget>[];
+    for(var domain in history.reversed) {
+      widgets.add(ListTile(
+        leading: Icon(Icons.replay),
+        title: Text(domain),
+        onTap: () => onTap(domain),
+      ));
+    }
     return Scrollbar(
       child: ListView(
         padding: EdgeInsets.all(0.0),
-        children: [
-          ListTile(
-            leading: Icon(Icons.replay),
-            title: Text('google.com'),
-            onTap: () {},
-          ),
-        ],
+        children: widgets,
       ),
     );
   }
@@ -138,7 +234,7 @@ class History extends StatelessWidget {
 class Result extends StatelessWidget {
   final String text;
 
-  Result({this.text});
+  Result(this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -190,8 +286,11 @@ class Result extends StatelessWidget {
 }
 
 class SearchBar extends StatelessWidget {
-  final double _horizontalPadding = 10.0;
-  final double _verticalPadding = 15.0;
+  final TextEditingController controller;
+  final ValueChanged<String> onSubmitted;
+  final double _padding = 10.0;
+
+  SearchBar({@required this.controller, @required this.onSubmitted});
 
   @override
   Widget build(BuildContext context) {
@@ -207,29 +306,25 @@ class SearchBar extends StatelessWidget {
         ],
       ),
       padding: EdgeInsets.only(
-        top: _verticalPadding + MediaQuery.of(context).padding.top,
-        bottom: _verticalPadding,
-        left: _horizontalPadding,
-        right: _horizontalPadding,
+        top: _padding + MediaQuery.of(context).padding.top,
+        bottom: _padding,
+        left: _padding,
+        right: _padding,
       ),
-      child: Search(),
-    );
-  }
-}
-
-class Search extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2.0,
-      child: TextField(
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          hintText: 'Search',
-          prefixIcon: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            child: const Icon(Icons.search),
+      child: Card(
+        elevation: 2.0,
+        child: TextField(
+          autocorrect: false,
+          controller: controller,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            hintText: 'Search',
+            prefixIcon: Container(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: const Icon(Icons.search),
+            ),
           ),
+          onSubmitted: onSubmitted,
         ),
       ),
     );

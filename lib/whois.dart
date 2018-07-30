@@ -11,7 +11,6 @@ class Domain {
   }
 
   Domain(String handle) {
-    handle = handle.toLowerCase().trim();
     var pieces, matches = _url.allMatches(handle).toList();
 
     try {
@@ -30,7 +29,8 @@ class Domain {
 }
 
 class WhoisClient {
-  // Throws OSError (no such host)
+  static final RegExp _trim = RegExp(r'^[\r\n]+|[\r\n]+$');
+
   static Future<String> query(String handle) async {
     var domain = Domain(handle);
     var server = '${domain.ext}.whois-servers.net';
@@ -38,12 +38,13 @@ class WhoisClient {
     var client = await Socket.connect(server, 43);
     client.write('${domain.host}\r\n');
 
-    var response = <int>[];
+    var buffer = <int>[];
     await for(var chunk in client) {
-      response.addAll(chunk);
+      buffer.addAll(chunk);
     }
     client.destroy();
 
-    return String.fromCharCodes(response).trimRight();
+    var response = String.fromCharCodes(buffer);
+    return response.replaceAll(_trim, '');
   }
 }
