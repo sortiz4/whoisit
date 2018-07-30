@@ -2,6 +2,8 @@ name: whoisit
 dependencies:
   flutter:
     sdk: flutter
+  path: ^1.5.1
+  path_provider: ^0.4.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

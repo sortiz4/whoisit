@@ -28,10 +28,15 @@ class Domain {
   }
 }
 
-class WhoisClient {
+class Whois {
   static final RegExp _trim = RegExp(r'^[\r\n]+|[\r\n]+$');
 
-  static Future<String> query(String handle) async {
+  final Domain domain;
+  final String response;
+
+  Whois(this.domain, this.response);
+
+  static Future<Whois> query(String handle) async {
     var domain = Domain(handle);
     var server = '${domain.ext}.whois-servers.net';
 
@@ -45,6 +50,7 @@ class WhoisClient {
     client.destroy();
 
     var response = String.fromCharCodes(buffer);
-    return response.replaceAll(_trim, '');
+    response = response.replaceAll(_trim, '');
+    return Whois(domain, response);
   }
 }

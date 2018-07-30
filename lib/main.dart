@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'whois.dart';
+import 'history.dart';
 
 void main() {
   runApp(App());
@@ -41,7 +42,7 @@ class HomeState extends State<Home> {
   static final int _historyTab = 1;
 
   final TextEditingController _controller = TextEditingController();
-  final List<String> _history = [];
+  final HistorySet _history = HistorySet();
 
   Widget _searchChild = EmptySearchStatus();
   int _activeTab = _searchTab;
@@ -85,10 +86,10 @@ class HomeState extends State<Home> {
         });
 
         // Wait for the response and update
-        var response = await WhoisClient.query(query);
+        var whois = await Whois.query(query);
         setState(() {
-          _child = Result(response);
-          _history.add(query);
+          _child = Result(whois.response);
+          _history.add(whois.domain.host);
         });
       } on FormatException {
         setState(() {
@@ -206,7 +207,7 @@ class Status extends StatelessWidget {
 }
 
 class History extends StatelessWidget {
-  final List<String> history;
+  final HistorySet history;
   final ValueSetter<String> onTap;
 
   History(this.history, this.onTap);
@@ -214,17 +215,19 @@ class History extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var widgets = <Widget>[];
-    for(var domain in history.reversed) {
-      widgets.add(ListTile(
-        leading: Icon(Icons.replay),
-        title: Text(domain),
-        onTap: () => onTap(domain),
-      ));
+    for(var domain in history) {
+      widgets.add(
+        ListTile(
+          leading: Icon(Icons.restore),
+          title: Text(domain),
+          onTap: () => onTap(domain),
+        )
+      );
     }
     return Scrollbar(
       child: ListView(
         padding: EdgeInsets.all(0.0),
-        children: widgets,
+        children: widgets.reversed.toList(),
       ),
     );
   }
