@@ -1,22 +1,22 @@
 #!/usr/bin/env python
 import argparse
 import os
-import zipfile
 from io import BytesIO
 from urllib import request
+from zipfile import ZipFile
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class Fonts:
-    HELP = 'Download font assets.'
-    URL = 'https://fonts.google.com/download?family=Roboto%20Mono'
-    DIR = os.path.join(BASE_DIR, 'fonts')
+    HELP = 'Downloads font assets.'
     NAMES = ['RobotoMono-Regular.ttf']
+    DIR = os.path.join(BASE_DIR, 'fonts')
+    URL = 'https://fonts.google.com/download?family=Roboto%20Mono'
 
 
 class Command:
-    help = 'Downloads assets for this application.'
+    help = 'Downloads assets required by this application.'
 
     def __init__(self):
         parser = argparse.ArgumentParser(description=Command.help)
@@ -33,16 +33,16 @@ class Command:
         if not os.path.exists(Fonts.DIR):
             os.makedirs(Fonts.DIR)
 
-        # Download the font archive as an in-memory file
+        # Download the font archive to memory
         buffer = request.urlopen(Fonts.URL).read()
-        zip_file = BytesIO(buffer)
+        archive = BytesIO(buffer)
 
-        # Read the archive and extract the fonts
-        archive = zipfile.ZipFile(zip_file)
+        # Extract the fonts
+        archive = ZipFile(archive)
         for name in Fonts.NAMES:
             buffer = archive.read(name)
-            font_path = os.path.join(Fonts.DIR, name)
-            with open(font_path, 'wb') as font:
+            path = os.path.join(Fonts.DIR, name)
+            with open(path, 'wb') as font:
                 font.write(buffer)
 
 
