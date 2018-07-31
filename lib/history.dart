@@ -1,14 +1,13 @@
 import 'dart:collection';
-import 'dart:core';
 import 'dart:io';
 import 'package:path/path.dart' as Path;
 import 'package:path_provider/path_provider.dart';
 
-class HistorySet extends IterableMixin<String> {
+class History extends IterableMixin<String> {
   Set<String> _history;
   File _file;
 
-  HistorySet() {
+  History() {
     _history = Set();
     _open();
   }

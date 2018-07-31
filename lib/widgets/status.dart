@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
-// Status displays an icon and a message
+/// A simple background status indicator with an icon and short description.
 class Status extends StatelessWidget {
+  final double _padding = 8.0;
+  final double _opacity = 0.5;
   final IconData icon;
   final String text;
 
@@ -10,12 +12,12 @@ class Status extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Opacity(
-      opacity: 0.5,
+      opacity: _opacity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(_padding),
             child: Icon(
               icon,
               size: Theme.of(context).textTheme.display2.fontSize,
@@ -32,6 +34,7 @@ class Status extends StatelessWidget {
   }
 }
 
+/// Indicates the user's search history is empty.
 class EmptyHistoryStatus extends Status {
   EmptyHistoryStatus() : super(
     icon: Icons.info,
@@ -39,6 +42,7 @@ class EmptyHistoryStatus extends Status {
   );
 }
 
+/// Indicates the user hasn't searched for anything.
 class EmptySearchStatus extends Status {
   EmptySearchStatus() : super(
     icon: Icons.search,
@@ -46,6 +50,7 @@ class EmptySearchStatus extends Status {
   );
 }
 
+/// Indicates an error has occurred.
 class ErrorStatus extends Status {
   ErrorStatus(String text) : super(
     icon: Icons.error,

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 class Whois {
-  static final RegExp _trim = RegExp(r'^[\r\n]+|[\r\n]+$');
+  static final _trim = RegExp(r'^[\r\n]+|[\r\n]+$');
 
   final Domain domain;
   final String response;
@@ -29,7 +29,7 @@ class Whois {
 }
 
 class Domain {
-  static final RegExp _url = RegExp(r'(?:\w+://)?(?:[\w.:-]+@)?([\w.-]+).*');
+  static final _url = RegExp(r'(?:\w+://)?(?:[\w.:-]+@)?([\w.-]+).*');
 
   String ext, name;
 

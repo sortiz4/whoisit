@@ -6,7 +6,10 @@ class SearchBar extends StatelessWidget {
   final ValueChanged<String> onSubmitted;
   final double _padding = 10.0;
 
-  SearchBar({@required this.controller, @required this.onSubmitted});
+  SearchBar({
+    @required this.controller,
+    @required this.onSubmitted,
+  });
 
   @override
   Widget build(BuildContext context) {

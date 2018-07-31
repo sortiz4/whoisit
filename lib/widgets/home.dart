@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:whoisit/history.dart';
 import 'package:whoisit/whois.dart';
 import 'package:whoisit/widgets/history.dart';
-import 'package:whoisit/widgets/response.dart';
 import 'package:whoisit/widgets/search.dart';
 import 'package:whoisit/widgets/status.dart';
+import 'package:whoisit/widgets/whois.dart';
 
 class Home extends StatefulWidget {
-  Home({Key key}) : super(key: key);
-
   @override
   HomeState createState() {
     return HomeState();
@@ -21,7 +19,7 @@ class HomeState extends State<Home> {
   static final int _historyTab = 1;
 
   final TextEditingController _controller = TextEditingController();
-  final HistorySet _history = HistorySet();
+  final History _history = History();
 
   Widget _searchChild = EmptySearchStatus();
   int _activeTab = _searchTab;
@@ -41,7 +39,10 @@ class HomeState extends State<Home> {
 
   Widget get _historyChild {
     if(_history.length > 0) {
-      return History(_history, onHistory);
+      return HistoryView(
+        history: _history,
+        onTap: onHistory,
+      );
     }
     return EmptyHistoryStatus();
   }
@@ -67,7 +68,7 @@ class HomeState extends State<Home> {
         // Wait for the response and update
         var whois = await Whois.query(query);
         setState(() {
-          _child = Response(whois.response);
+          _child = WhoisCard(whois.response);
           _history.add(whois.domain.host);
         });
       } on FormatException {
