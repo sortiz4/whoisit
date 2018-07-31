@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:whoisit/widgets/home.dart';
 
+/// The main widget and root of the widget tree.
 class App extends StatelessWidget {
   static final backgroundColor = const Color(0xFFEEEEEE);
   static final primaryColor = const Color(0xFF007DE6);
-  static final shadowColor = const Color(0x33000000);
   static final title = 'whoisit';
 
   static final theme = ThemeData(

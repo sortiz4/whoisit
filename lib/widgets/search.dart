@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:whoisit/widgets/app.dart';
 
+/// A global search field replacing the usual `AppBar`.
 class SearchBar extends StatelessWidget {
+  final double _elevation = 2.0;
+  final double _padding = 10.0;
   final TextEditingController controller;
   final ValueChanged<String> onSubmitted;
-  final double _padding = 10.0;
 
   SearchBar({
     @required this.controller,
@@ -13,37 +14,33 @@ class SearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        boxShadow: [
-          BoxShadow(
-            color: App.shadowColor,
-            blurRadius: 1.0,
-            spreadRadius: 1.0,
-          ),
-        ],
-      ),
-      padding: EdgeInsets.only(
-        top: _padding + MediaQuery.of(context).padding.top,
-        bottom: _padding,
-        left: _padding,
-        right: _padding,
-      ),
-      child: Card(
-        elevation: 2.0,
-        child: TextField(
-          autocorrect: false,
-          controller: controller,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: 'Search',
-            prefixIcon: Container(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
-              child: const Icon(Icons.search),
+    return Material(
+      color: Theme.of(context).primaryColor,
+      elevation: _elevation,
+      child: Container(
+        padding: EdgeInsets.only(
+          top: _padding + MediaQuery.of(context).padding.top,
+          bottom: _padding,
+          left: _padding,
+          right: _padding,
+        ),
+        child: Card(
+          elevation: _elevation,
+          child: TextField(
+            autocorrect: false,
+            controller: controller,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: 'Search',
+              prefixIcon: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: _padding,
+                ),
+                child: Icon(Icons.search),
+              ),
             ),
+            onSubmitted: onSubmitted,
           ),
-          onSubmitted: onSubmitted,
         ),
       ),
     );

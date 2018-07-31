@@ -7,7 +7,10 @@ class Status extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  Status({this.icon, this.text});
+  Status({
+    @required this.icon,
+    @required this.text,
+  });
 
   @override
   Widget build(BuildContext context) {

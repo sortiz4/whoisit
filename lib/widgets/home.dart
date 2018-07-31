@@ -115,17 +115,17 @@ class HomeState extends State<Home> {
           ),
         ],
       ),
-      bottomNavigationBar: new BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         currentIndex: _activeTab,
         onTap: onNavigate,
         items: [
-          new BottomNavigationBarItem(
-            icon: const Icon(Icons.search),
-            title: new Text('Search'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            title: Text('Search'),
           ),
-          new BottomNavigationBarItem(
-            icon: const Icon(Icons.history),
-            title: new Text('History'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            title: Text('History'),
           ),
         ],
       ),

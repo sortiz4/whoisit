@@ -7,11 +7,14 @@ class HistoryView extends StatelessWidget {
   final History history;
   final ValueSetter<String> onTap;
 
-  HistoryView({this.history, this.onTap});
+  HistoryView({
+    @required this.history,
+    @required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Map the history to list items
+    // Map the history to a list of widgets
     var widgets = <Widget>[];
     for(var domain in history) {
       widgets.add(ListTile(
