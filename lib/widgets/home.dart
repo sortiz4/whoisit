@@ -17,10 +17,8 @@ class Home extends StatefulWidget {
 class HomeState extends State<Home> {
   static final int _searchTab = 0;
   static final int _historyTab = 1;
-
   final TextEditingController _controller = TextEditingController();
   final History _history = History();
-
   Widget _searchChild = EmptySearchStatus();
   int _activeTab = _searchTab;
 
@@ -69,7 +67,7 @@ class HomeState extends State<Home> {
         var whois = await Whois.query(query);
         setState(() {
           _child = WhoisCard(whois.response);
-          _history.add(whois.domain.host);
+          _history.add(whois.domain);
         });
       } on FormatException {
         setState(() {
@@ -94,7 +92,10 @@ class HomeState extends State<Home> {
   }
 
   void onHistory(String query) {
-    setState(() => _controller.text = query);
+    setState(() {
+      _controller.text = query;
+      onSearch(query);
+    });
   }
 
   @override

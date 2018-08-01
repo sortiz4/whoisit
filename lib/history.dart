@@ -27,7 +27,7 @@ class History extends IterableMixin<String> {
 
   void _read() async {
     var lines = await _file.readAsLines();
-    lines.retainWhere((var line) => line.length > 0);
+    lines.retainWhere((line) => line.length > 0);
     _history.addAll(lines);
   }
 
