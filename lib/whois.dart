@@ -2,43 +2,49 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-/// A simple whois client supporting most (if not all) domain queries.
+/// A simple WHOIS client supporting most (if not all) domain queries.
 class Whois {
-  static final _trim = RegExp(r'^[\r\n]+|[\r\n]+$');
+  static final _surrounding = RegExp(r'^[\r\n]+|[\r\n]+$');
+  static final _trailing = RegExp(r'[\t ]+(?=[\r\n])');
+  static final _tabs = RegExp(r'\t');
   final String domain;
   final String response;
 
   Whois._internal(this.domain, this.response);
 
   /// Tries to connect using the full domain extension. Failing that, the
-  /// top-level domain extension will be used in its place (if one exists).
+  /// extension will iteratively generalize until the connection succeeds or
+  /// all possibilities are exhausted.
   static Future<Socket> _connect(Domain domain) async {
     var extension = domain.extension;
     try {
       return await _resolve(extension);
     } on SocketException catch(exc) {
-      var pieces = extension.split('.');
-      if(pieces.length == 2) {
-        return await _resolve(pieces[1]);
-      } else {
-        throw exc;
+      var parts = extension.split('.');
+      for(var i in Iterable.generate(parts.length)) {
+        if(i > 0) {
+          try {
+            return await _resolve(parts.sublist(i).join('.'));
+          } on SocketException {}
+        }
       }
+      throw exc;
     }
   }
 
-  /// Subdomains of `whois-servers.net` CNAME the appropriate whois server.
+  /// Subdomains of `whois-servers.net` CNAME the appropriate WHOIS server.
   /// It's unclear who maintains these records or if they're exhaustive.
   static Future<Socket> _resolve(String extension) async {
     return await Socket.connect('$extension.whois-servers.net', 43);
   }
 
-  /// Queries the appropriate whois server using the `handle` and returns an
+  /// Queries the appropriate WHOIS server using the `handle` and returns an
   /// instance of `Whois`. The `handle` should be a trimmed and normalized
   /// host name.
   static Future<Whois> query(String handle) async {
     var domain = Domain(handle);
 
-    // Connect to and query the appropriate whois server
+    // Connect to and query the appropriate WHOIS server
     var client = await _connect(domain);
     client.write('$domain\r\n');
 
@@ -49,9 +55,12 @@ class Whois {
     }
     client.destroy();
 
-    // Decode the buffer and trim the surrounding line feeds
+    // Decode the buffer, trim the surrounding blank lines, remove the trailing
+    // whitespace at the end of each line, and replace tabs with four spaces
     var response = Utf8Decoder().convert(buffer);
-    response = response.replaceAll(_trim, '');
+    response = response.replaceAll(_surrounding, '');
+    response = response.replaceAll(_trailing, '');
+    response = response.replaceAll(_tabs, '    ');
     return Whois._internal('$domain', response);
   }
 }
@@ -70,10 +79,10 @@ class Domain {
     }
 
     // Attempt to separate the handle
-    var pieces = handle.split('.');
-    if(pieces.length >= 2) {
-      name = pieces[0];
-      extension = pieces.sublist(1).join('.');
+    var parts = handle.split('.');
+    if(parts.length >= 2) {
+      name = parts[0];
+      extension = parts.sublist(1).join('.');
     } else {
       throw FormatException('Invalid domain format');
     }
