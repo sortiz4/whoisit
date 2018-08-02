@@ -114,7 +114,7 @@ class HomeState extends State<Home> {
 
   /// Overwrites the search field and executes the search query again.
   void onRecall(String query) {
-    setState(() => _searchController.text = query);
+    _searchController.text = query;
     onSearch(query);
   }
 

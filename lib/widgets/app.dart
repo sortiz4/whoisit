@@ -5,7 +5,7 @@ import 'package:whoisit/widgets/home.dart';
 class App extends StatelessWidget {
   static final backgroundColor = const Color(0xFFEEEEEE);
   static final primaryColor = const Color(0xFF007DE6);
-  static final title = 'whoisit';
+  static final title = 'Whoisit';
 
   static final theme = ThemeData(
     backgroundColor: backgroundColor,
