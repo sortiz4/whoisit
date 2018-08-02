@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:whoisit/widgets/scroll.dart';
 
 /// Displays the results of a WHOIS query using a monospaced font. The widget
-/// will stretch vertically and scroll horizontally with large responses.
+/// will stretch vertically and scroll horizontally with large responses, but
+/// will wrap exceptionally long unbroken lines.
 class WhoisCard extends StatelessWidget {
   final double _elevation = 2.0;
   final double _padding = 10.0;

@@ -15,7 +15,8 @@ class Home extends StatefulWidget {
   }
 }
 
-/// The home state is the single source of truth and orchestrates everything.
+/// The home state is the single source of truth and orchestrates important
+/// behaviors such as tab navigation, history management, and search queries.
 class HomeState extends State<Home> {
   /// A constant representing the search tab index.
   static final _searchTab = 0;
@@ -44,7 +45,7 @@ class HomeState extends State<Home> {
     }
   }
 
-  /// The view getter returns the child associated with the active tab.
+  /// The view getter returns the view associated with the active tab.
   Widget get _view {
     if(_activeTab == _searchTab) {
       return _searchView;
@@ -53,7 +54,7 @@ class HomeState extends State<Home> {
   }
 
   /// The history view will only display a non-empty search history. Otherwise,
-  /// a status indicator will be displayed indicating an empty search history.
+  /// a status indicator will be displayed revealing an empty search history.
   Widget get _historyView {
     if(_history.length == 0) {
       return EmptyHistoryStatus();
@@ -76,7 +77,7 @@ class HomeState extends State<Home> {
   /// Automatically switches to the search tab and executes a WHOIS query if
   /// the query is non-empty (all queries will be trimmed and normalized). A
   /// response card will be displayed upon a successful query, otherwise a
-  /// status indicator will be displayed indicating the type of error. Note
+  /// status indicator will be displayed revealing the type of error. Note
   /// that only successful queries will be added to the search history.
   void onSearch(String query) async {
     query = query.toLowerCase().trim();
@@ -111,7 +112,7 @@ class HomeState extends State<Home> {
     }
   }
 
-  /// Overwrites the search field and executes the WHOIS query again.
+  /// Overwrites the search field and executes the search query again.
   void onRecall(String query) {
     setState(() => _searchController.text = query);
     onSearch(query);

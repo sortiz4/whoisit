@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// A global search field replacing the usual `AppBar`.
+/// A global search field designed to replace the `AppBar`.
 class SearchBar extends StatelessWidget {
   final double _elevation = 2.0;
   final double _padding = 10.0;

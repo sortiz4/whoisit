@@ -70,8 +70,9 @@ class Domain {
   static final _pattern = RegExp(r'^[-\w.]+$');
   String name, extension;
 
-  /// Separates the `handle` into a `name` and `extension` The `handle` should
-  /// be a trimmed and normalized host name.
+  /// Separates the `handle` into a `name` and `extension`. The `handle` should
+  /// be a trimmed and normalized host name. Serious problems with the `handle`
+  /// will be by the WHOIS client.
   Domain(String handle) {
     // Reject obvious pattern mismatches
     if(!_pattern.hasMatch(handle)) {
