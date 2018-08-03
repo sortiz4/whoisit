@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// A global search field designed to replace the `AppBar`.
-class SearchBar extends StatelessWidget {
-  final double _elevation = 2.0;
-  final double _padding = 10.0;
+class SearchBar extends StatefulWidget {
   final TextEditingController controller;
   final ValueChanged<String> onSubmitted;
 
@@ -11,6 +9,33 @@ class SearchBar extends StatelessWidget {
     @required this.controller,
     @required this.onSubmitted,
   });
+
+  @override
+  _SearchBarState createState() {
+    return _SearchBarState();
+  }
+}
+
+class _SearchBarState extends State<SearchBar> {
+  final double _elevation = 2.0;
+  final double _padding = 10.0;
+
+  /// A tappable clear icon will appear when the search field is non-empty.
+  /// Tapping the icon will clear the search field and remove the icon.
+  Widget get _suffixIcon {
+    if(widget.controller.text.length > 0) {
+      return GestureDetector(
+        onTap: () => setState(() => widget.controller.clear()),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: _padding,
+          ),
+          child: Icon(Icons.clear),
+        ),
+      );
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +53,7 @@ class SearchBar extends StatelessWidget {
           elevation: _elevation,
           child: TextField(
             autocorrect: false,
-            controller: controller,
+            controller: widget.controller,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Search',
@@ -38,8 +63,10 @@ class SearchBar extends StatelessWidget {
                 ),
                 child: Icon(Icons.search),
               ),
+              suffixIcon: _suffixIcon,
             ),
-            onSubmitted: onSubmitted,
+            onChanged: (s) => setState(() {}),
+            onSubmitted: widget.onSubmitted,
           ),
         ),
       ),

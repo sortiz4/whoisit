@@ -27,7 +27,7 @@ class History extends IterableMixin<String> {
     () async {
       // Compute the full path of the history file
       var directory = await Provider.getApplicationDocumentsDirectory();
-      var location = Path.join(directory.path, _name);
+      var location = Path.join(directory?.path, _name);
 
       try {
         // Create the file (nondestructive)
@@ -38,8 +38,7 @@ class History extends IterableMixin<String> {
 
       if(_file != null) {
         // Load the history file into the history set
-        var lines = await _file.readAsLines();
-        _history.addAll(lines);
+        _history.addAll(await _file.readAsLines());
       }
     }();
   }

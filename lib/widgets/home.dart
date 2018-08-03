@@ -7,17 +7,16 @@ import 'package:whoisit/widgets/search.dart';
 import 'package:whoisit/widgets/status.dart';
 import 'package:whoisit/widgets/whois.dart';
 
-/// The home widget implements the majority of the applications behavior.
+/// The home widget is the single source of truth and orchestrates important
+/// behaviors such as tab navigation, history management, and search queries.
 class Home extends StatefulWidget {
   @override
-  HomeState createState() {
-    return HomeState();
+  _HomeState createState() {
+    return _HomeState();
   }
 }
 
-/// The home state is the single source of truth and orchestrates important
-/// behaviors such as tab navigation, history management, and search queries.
-class HomeState extends State<Home> {
+class _HomeState extends State<Home> {
   /// A constant representing the search tab index.
   static final _searchTab = 0;
 
