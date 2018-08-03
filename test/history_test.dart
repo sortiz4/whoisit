@@ -3,28 +3,30 @@ import 'package:whoisit/history.dart';
 
 void main() {
   group('History', () {
-    var history, queries = <String>[
-      'google.com',
-      'jobs.ac.uk',
-      'pub.dartlang.org',
-    ];
+    var history = History();
 
-    setUp(() {
-      history = History();
+    // The history only cares about uniqueness
+    var queries = <String>['a', 'b', 'c'];
+
+    tearDown(() {
+      // Tests depend on a fresh instance
+      history.clear();
     });
 
+    test('does not repeat', () {
+      history.addAll(queries + queries);
+
+      // The history list should match the query list
+      expect(history.toList(), equals(queries));
+    });
     test('preserves insertion order', () {
-      for(var query in queries) {
-        history.add(query);
-      }
+      history.addAll(queries);
 
       // The history list should match the query list
       expect(history.toList(), equals(queries));
     });
     test('correctly reorders duplicates', () {
-      for(var query in queries) {
-        history.add(query);
-      }
+      history.addAll(queries);
 
       // Reinsert the first query into the history
       var duplicate = queries[0];
