@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
         // Wait for the response and update
         var whois = await Whois.query(query);
         setState(() {
-          _view = WhoisCard(whois.response);
+          _view = WhoisCard(whois);
           _history.add(whois.domain);
         });
       } on FormatException {

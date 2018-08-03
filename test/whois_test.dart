@@ -19,6 +19,7 @@ void main() {
       'jobs.ac.uk', // Good second-level extension
       'pub.dartlang.org', // Bad query but good extension
     ];
+    var server = 'whois-servers.net';
 
     test('fails to parse bad handles', () {
       for(var handle in badHandles) {
@@ -44,6 +45,12 @@ void main() {
       for(var domain in goodDomains) {
         var whois = await Whois.query(domain);
         expect(whois.domain, equals(domain));
+      }
+    });
+    test('server matches reference', () async {
+      for(var domain in goodDomains) {
+        var whois = await Whois.query(domain);
+        expect(whois.server, endsWith('.$server'));
       }
     });
   });

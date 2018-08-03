@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whoisit/whois.dart';
 import 'package:whoisit/widgets/scroll.dart';
 
 /// Displays the results of a WHOIS query using a monospaced font. The widget
@@ -7,9 +8,9 @@ import 'package:whoisit/widgets/scroll.dart';
 class WhoisCard extends StatelessWidget {
   final double _elevation = 2.0;
   final double _padding = 10.0;
-  final String text;
+  final Whois whois;
 
-  WhoisCard(this.text);
+  WhoisCard(this.whois);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class WhoisCard extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Response',
+                  whois.server,
                   style: Theme.of(context).textTheme.button.copyWith(
                     color: Colors.white,
                   ),
@@ -43,7 +44,7 @@ class WhoisCard extends StatelessWidget {
                       maxWidth: MediaQuery.of(context).size.width * 3,
                     ),
                     child: Text(
-                      text,
+                      whois.response,
                       style: TextStyle(
                         fontFamily: 'RobotoMono',
                       ),

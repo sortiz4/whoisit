@@ -7,10 +7,9 @@ class Whois {
   static final _surrounding = RegExp(r'^[\r\n]+|[\r\n]+$');
   static final _trailing = RegExp(r'[\t ]+(?=[\r\n])');
   static final _tabs = RegExp(r'\t');
-  final String domain;
-  final String response;
+  final String domain, server, response;
 
-  Whois._internal(this.domain, this.response);
+  Whois._internal(this.domain, this.server, this.response);
 
   /// Tries to connect using the full domain extension. Failing that, the
   /// extension will iteratively generalize until the connection succeeds or
@@ -46,6 +45,7 @@ class Whois {
 
     // Connect to and query the appropriate WHOIS server
     var client = await _connect(domain);
+    var server = client.address.host;
     client.write('$domain\r\n');
 
     // Reduce the socket to a list of integers (code points)
@@ -61,7 +61,7 @@ class Whois {
     response = response.replaceAll(_surrounding, '');
     response = response.replaceAll(_trailing, '');
     response = response.replaceAll(_tabs, '    ');
-    return Whois._internal('$domain', response);
+    return Whois._internal('$domain', server, response);
   }
 }
 
