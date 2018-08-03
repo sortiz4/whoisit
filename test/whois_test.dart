@@ -10,6 +10,7 @@ void main() {
         'a', // Missing dot separator
       ];
       for(var handle in handles) {
+        // Format exceptions should be thrown by the domain parser
         expect(Whois.query(handle), throwsFormatException);
       }
     });
@@ -21,6 +22,7 @@ void main() {
         'a.b.c.d', // Non-existent third-level extension
       ];
       for(var handle in handles) {
+        // Socket exceptions should be thrown upon resolving the WHOIS server
         expect(Whois.query(handle), throwsA(isInstanceOf<SocketException>()));
       }
     });
@@ -31,6 +33,7 @@ void main() {
         'pub.dartlang.org', // Bad query but good extension
       ];
       for(var handle in handles) {
+        // Responses should be non-empty
         var whois = await Whois.query(handle);
         expect(whois, isInstanceOf<Whois>());
         expect(whois.response.length, greaterThan(0));

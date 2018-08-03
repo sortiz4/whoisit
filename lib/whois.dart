@@ -45,8 +45,8 @@ class Whois {
     var domain = _Domain(handle);
 
     // Connect to and query the appropriate WHOIS server
-    var client = await _connect(domain)
-      ..write('$domain\r\n');
+    var client = await _connect(domain);
+    client.write('$domain\r\n');
 
     // Reduce the socket to a list of integers (code points)
     var buffer = <int>[];
@@ -57,10 +57,10 @@ class Whois {
 
     // Decode the buffer, trim the surrounding blank lines, remove the trailing
     // whitespace at the end of each line, and replace tabs with four spaces
-    var response = Utf8Decoder().convert(buffer)
-      ..replaceAll(_surrounding, '')
-      ..replaceAll(_trailing, '')
-      ..replaceAll(_tabs, '    ');
+    var response = Utf8Decoder().convert(buffer);
+    response = response.replaceAll(_surrounding, '');
+    response = response.replaceAll(_trailing, '');
+    response = response.replaceAll(_tabs, '    ');
     return Whois._internal('$domain', response);
   }
 }

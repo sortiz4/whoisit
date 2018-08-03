@@ -65,7 +65,7 @@ class _SearchBarState extends State<SearchBar> {
               ),
               suffixIcon: _suffixIcon,
             ),
-            onChanged: (s) => setState(() {}),
+            onChanged: (_) => setState(() {}),
             onSubmitted: widget.onSubmitted,
           ),
         ),

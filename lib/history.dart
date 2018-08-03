@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:io';
+import 'package:flutter/services.dart';
 import 'package:path/path.dart' as Path;
 import 'package:path_provider/path_provider.dart' as Provider;
 
@@ -12,7 +13,7 @@ import 'package:path_provider/path_provider.dart' as Provider;
 /// be accessed, the search history will continue to work but will not persist
 /// across sessions. In the interest of consistency and performance, only one
 /// instance of this data structure should exist at any given time.
-class History extends IterableMixin<String> {
+class History extends SetBase<String> {
   /// The name of the history file (the full path is determined at runtime).
   static final _name = 'history';
 
@@ -26,8 +27,13 @@ class History extends IterableMixin<String> {
   History() {
     () async {
       // Compute the full path of the history file
-      var directory = await Provider.getApplicationDocumentsDirectory();
-      var location = Path.join(directory?.path, _name);
+      var directory, location;
+      try {
+        directory = await Provider.getApplicationDocumentsDirectory();
+        location = Path.join(directory?.path, _name);
+      } on MissingPluginException {
+        return;
+      }
 
       try {
         // Create the file (nondestructive)
@@ -43,26 +49,9 @@ class History extends IterableMixin<String> {
     }();
   }
 
-  /// Returns an iterator over the history set.
-  @override
-  Iterator<String> get iterator {
-    return _history.iterator;
-  }
-
-  /// Returns the length of the history set.
-  @override
-  int get length {
-    return _history.length;
-  }
-
-  /// Checks if the history set contains the `value`.
-  @override
-  bool contains(Object value) {
-    return _history.contains(value);
-  }
-
   /// Adds the `value` to the history set and updates the history file. If the
   /// history set already contains the `value`, it is removed and reinserted.
+  @override
   bool add(String value) {
     // Update the history set to reflect the order of search queries
     if(_history.contains(value)) {
@@ -77,5 +66,34 @@ class History extends IterableMixin<String> {
 
     // This method always changes the history set
     return true;
+  }
+
+  @override
+  Iterator<String> get iterator {
+    return _history.iterator;
+  }
+  @override
+  int get length {
+    return _history.length;
+  }
+  @override
+  void clear() {
+    return _history.clear();
+  }
+  @override
+  bool contains(Object element) {
+    return _history.contains(element);
+  }
+  @override
+  String lookup(Object element) {
+    return _history.lookup(element);
+  }
+  @override
+  bool remove(Object value) {
+    return _history.remove(value);
+  }
+  @override
+  Set<String> toSet() {
+    return _history.toSet();
   }
 }
