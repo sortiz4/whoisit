@@ -1,5 +1,6 @@
 *.class
 *.iml
+*.jks
 /.gradle
 /.idea
 /build
@@ -9,4 +10,5 @@
 GeneratedPluginRegistrant.java
 gradlew
 gradlew.bat
+key.properties
 local.properties

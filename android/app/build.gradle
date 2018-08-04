@@ -1,3 +1,4 @@
+// Uncomment the commented lines and change the signing configuration on release
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 
@@ -12,6 +13,10 @@ def flutterRoot = localProperties.getProperty('flutter.sdk')
 if(flutterRoot == null) {
     throw new GradleException('Flutter SDK not found. Define location with flutter.sdk in the local.properties file.')
 }
+
+//def keystorePropertiesFile = rootProject.file('key.properties')
+//def keystoreProperties = new Properties()
+//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
@@ -33,9 +38,21 @@ android {
         versionName '1.0'
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
+    //signingConfigs {
+    //    release {
+    //        keyAlias keystoreProperties['keyAlias']
+    //        keyPassword keystoreProperties['keyPassword']
+    //        storeFile file(keystoreProperties['storeFile'])
+    //        storePassword keystoreProperties['storePassword']
+    //    }
+    //}
     buildTypes {
         release {
+            //signingConfig signingConfigs.release
             signingConfig signingConfigs.debug
+            minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
