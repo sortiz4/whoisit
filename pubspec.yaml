@@ -1,13 +1,16 @@
 name: whoisit
+
 dependencies:
   flutter:
     sdk: flutter
-  path: ^1.5.1
+  path: ^1.6.2
   path_provider: ^0.4.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  test: ^0.12.37
+  test: ^1.5.1+1
+
 flutter:
   fonts:
     - family: RobotoMono

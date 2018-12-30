@@ -16,6 +16,7 @@ class WhoisCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScrollbarView(
       child: Card(
+        clipBehavior: Clip.hardEdge,
         elevation: _elevation,
         margin: EdgeInsets.all(_padding),
         child: Column(

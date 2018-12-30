@@ -17,6 +17,7 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
+  final double _alignment = 16.0;
   final double _elevation = 2.0;
   final double _padding = 10.0;
 
@@ -56,6 +57,9 @@ class _SearchBarState extends State<SearchBar> {
             controller: widget.controller,
             decoration: InputDecoration(
               border: InputBorder.none,
+              contentPadding: EdgeInsets.symmetric(
+                vertical: _alignment,
+              ),
               hintText: 'Search',
               prefixIcon: Container(
                 padding: EdgeInsets.symmetric(

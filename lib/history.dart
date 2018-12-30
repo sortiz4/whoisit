@@ -72,26 +72,32 @@ class History extends SetBase<String> {
   Iterator<String> get iterator {
     return _history.iterator;
   }
+
   @override
   int get length {
     return _history.length;
   }
+
   @override
   void clear() {
     return _history.clear();
   }
+
   @override
   bool contains(Object element) {
     return _history.contains(element);
   }
+
   @override
   String lookup(Object element) {
     return _history.lookup(element);
   }
+
   @override
   bool remove(Object value) {
     return _history.remove(value);
   }
+
   @override
   Set<String> toSet() {
     return _history.toSet();

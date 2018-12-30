@@ -19,12 +19,14 @@ void main() {
       // The history list should match the query list
       expect(history.toList(), equals(queries));
     });
+
     test('preserves insertion order', () {
       history.addAll(queries);
 
       // The history list should match the query list
       expect(history.toList(), equals(queries));
     });
+
     test('correctly reorders duplicates', () {
       history.addAll(queries);
 

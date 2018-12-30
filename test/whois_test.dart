@@ -27,12 +27,14 @@ void main() {
         expect(Whois.query(handle), throwsFormatException);
       }
     });
+
     test('fails to query bad domains', () {
       for(var domain in badDomains) {
         // Socket exceptions should be thrown upon resolving the WHOIS server
         expect(Whois.query(domain), throwsA(isInstanceOf<SocketException>()));
       }
     });
+
     test('queries good domains', () async {
       for(var domain in goodDomains) {
         // Responses should be non-empty
@@ -41,12 +43,14 @@ void main() {
         expect(whois.response.length, greaterThan(0));
       }
     });
+
     test('domain matches handle', () async {
       for(var domain in goodDomains) {
         var whois = await Whois.query(domain);
         expect(whois.domain, equals(domain));
       }
     });
+
     test('server matches reference', () async {
       for(var domain in goodDomains) {
         var whois = await Whois.query(domain);
