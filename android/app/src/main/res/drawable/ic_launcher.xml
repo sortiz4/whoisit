@@ -2,13 +2,15 @@
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
     <background
         android:drawable="@drawable/ic_logo_background"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter"
+    />
     <foreground>
         <inset
             android:drawable="@drawable/ic_logo"
             android:insetTop="30%"
             android:insetRight="30%"
             android:insetBottom="30%"
-            android:insetLeft="30%" />
+            android:insetLeft="30%"
+        />
     </foreground>
 </adaptive-icon>
