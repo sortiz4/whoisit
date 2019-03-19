@@ -1,8 +1,8 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.stevenortiz.whoisit"
     android:versionCode="2"
     android:versionName="1.1"
+    package="me.stevenortiz.whoisit"
 >
     <uses-permission
         android:name="android.permission.INTERNET"
