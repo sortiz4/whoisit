@@ -10,6 +10,10 @@ import 'package:whoisit/widgets/whois.dart';
 /// The home widget is the single source of truth and orchestrates important
 /// behaviors such as tab navigation, history management, and search queries.
 class Home extends StatefulWidget {
+  final History history;
+
+  Home({@required this.history});
+
   @override
   _HomeState createState() {
     return _HomeState();
@@ -27,22 +31,12 @@ class _HomeState extends State<Home> {
   /// be overwritten when a user recalls a query from their search history.
   final _searchController = TextEditingController();
 
-  /// The user's search history will be updated upon successful WHOIS queries.
-  final _history = History();
-
   /// The search view displays a status indicator or a successful WHOIS query
   /// response. The initial view directs the user to search for something.
   Widget _searchView = EmptySearchStatus();
 
   /// The active tab index applies to the bottom navigation bar.
   int _activeTab = _searchTab;
-
-  /// The view setter only applies when the search tab is active.
-  set _view(Widget child) {
-    if(_activeTab == _searchTab) {
-      _searchView = child;
-    }
-  }
 
   /// The view getter returns the view associated with the active tab.
   Widget get _view {
@@ -51,6 +45,18 @@ class _HomeState extends State<Home> {
     ) : (
       _historyView
     );
+  }
+
+  /// The view setter only applies when the search tab is active.
+  set _view(Widget child) {
+    if(_activeTab == _searchTab) {
+      _searchView = child;
+    }
+  }
+
+  /// The user's search history will be updated upon successful WHOIS queries.
+  History get _history {
+    return widget.history;
   }
 
   /// The history view will only display a non-empty search history. Otherwise,

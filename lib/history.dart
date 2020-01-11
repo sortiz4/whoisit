@@ -6,13 +6,7 @@ import 'package:path_provider/path_provider.dart' as Provider;
 
 /// An iterable data structure that maintains the user's search history. The
 /// search history will persist across sessions through a history file that
-/// will be read on construction and overwritten whenever a change occurs
-/// (asynchronously). There is a very small window where an instance may be
-/// modified before the history file has been read which will affect the order
-/// of the search queries. In the unlikely event that the history file cannot
-/// be accessed, the search history will continue to work but will not persist
-/// across sessions. In the interest of consistency and performance, only one
-/// instance of this data structure should exist at any given time.
+/// will be read on construction and overwritten whenever a change occurs.
 class History extends SetBase<String> {
   /// The name of the history file (the full path is determined at runtime).
   static final _name = 'history';
@@ -20,33 +14,38 @@ class History extends SetBase<String> {
   /// The history set is implemented as an insertion order hash set.
   Set<String> _history = Set();
 
-  /// The full path of the history file is asynchronously set.
-  File _file;
+  /// The history file.
+  File file;
 
-  /// Schedules an asynchronous task to load the history file.
-  History() {
-    () async {
+  /// Loads the history file from storage.
+  static Future<History> fromStorage() async {
+    final file = await _getFile();
+    final history = History();
+    if(file != null) {
+      // Load the history file into the history set
+      history.addAll(await file.readAsLines());
+      history.file = file;
+    }
+    return history;
+  }
+
+  /// Locates an existing history a file or creates a new one.
+  static Future<File> _getFile() async {
+    var location;
+    try {
       // Compute the full path of the history file
-      var directory, location;
-      try {
-        directory = await Provider.getApplicationDocumentsDirectory();
-        location = Path.join(directory?.path, _name);
-      } on MissingPluginException {
-        return;
-      }
+      final directory = await Provider.getApplicationDocumentsDirectory();
+      location = Path.join(directory?.path, _name);
+    } on MissingPluginException {
+      return null;
+    }
 
-      try {
-        // Create the file (nondestructive)
-        _file = await File(location).create();
-      } on FileSystemException {
-        print('The history file could not be accessed');
-      }
-
-      if(_file != null) {
-        // Load the history file into the history set
-        _history.addAll(await _file.readAsLines());
-      }
-    }();
+    try {
+      // Create the file (nondestructive)
+      return await File(location).create();
+    } on FileSystemException {
+      return null;
+    }
   }
 
   /// Adds the `value` to the history set and updates the history file. If the
@@ -60,8 +59,8 @@ class History extends SetBase<String> {
     _history.add(value);
 
     // The history file must be completely overwritten with every change
-    if(_file != null) {
-      _file.writeAsString(_history.join('\n'));
+    if(file != null) {
+      file.writeAsString(_history.join('\n'));
     }
 
     // This method always changes the history set
