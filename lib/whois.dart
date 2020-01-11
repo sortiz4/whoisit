@@ -15,12 +15,12 @@ class Whois {
   /// extension will iteratively generalize until the connection succeeds or
   /// all possibilities are exhausted.
   static Future<Socket> _connect(_Domain domain) async {
-    var extension = domain.extension;
+    final extension = domain.extension;
     try {
       return await _resolve(extension);
     } on SocketException catch(exc) {
-      var parts = extension.split('.');
-      for(var i in Iterable.generate(parts.length)) {
+      final parts = extension.split('.');
+      for(final i in Iterable.generate(parts.length)) {
         if(i > 0) {
           try {
             return await _resolve(parts.sublist(i).join('.'));
@@ -41,23 +41,23 @@ class Whois {
   /// instance of `Whois`. The `handle` should be a trimmed and normalized
   /// host name.
   static Future<Whois> query(String handle) async {
-    var domain = _Domain(handle);
+    final domain = _Domain(handle);
 
     // Connect to and query the appropriate WHOIS server
-    var client = await _connect(domain);
-    var server = client.address.host;
+    final client = await _connect(domain);
+    final server = client.address.host;
     client.write('$domain\r\n');
 
     // Reduce the socket to a list of integers (code points)
-    var buffer = <int>[];
-    await for(var chunk in client) {
+    final buffer = <int>[];
+    await for(final chunk in client) {
       buffer.addAll(chunk);
     }
     client.destroy();
 
     // Decode the buffer, trim the surrounding blank lines, remove the trailing
     // whitespace at the end of each line, and replace tabs with four spaces
-    var response = (
+    final response = (
       Utf8Decoder()
         .convert(buffer)
         .replaceAll(_surrounding, '')
@@ -82,7 +82,7 @@ class _Domain {
     }
 
     // Attempt to separate the handle
-    var parts = handle.split('.');
+    final parts = handle.split('.');
     if(parts.length >= 2) {
       name = parts[0];
       extension = parts.sublist(1).join('.');

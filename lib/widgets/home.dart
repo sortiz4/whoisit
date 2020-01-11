@@ -95,7 +95,7 @@ class _HomeState extends State<Home> {
         setState(() => _view = CircularProgressIndicator());
 
         // Wait for the response and update
-        var whois = await Whois.query(query);
+        final whois = await Whois.query(query);
         setState(() {
           _view = WhoisCard(whois);
           _history.add(whois.domain);

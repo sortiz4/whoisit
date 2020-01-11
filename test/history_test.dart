@@ -3,10 +3,10 @@ import 'package:whoisit/history.dart';
 
 void main() {
   group('History', () {
-    var history = History();
+    final history = History();
 
     // The history only cares about uniqueness
-    var queries = <String>['a', 'b', 'c'];
+    const queries = <String>['a', 'b', 'c'];
 
     tearDown(() {
       // Tests depend on a fresh instance
@@ -31,7 +31,7 @@ void main() {
       history.addAll(queries);
 
       // Reinsert the first query into the history
-      var duplicate = queries[0];
+      final duplicate = queries[0];
       history.add(duplicate);
 
       // Ensure the duplicate appears at the end of the history

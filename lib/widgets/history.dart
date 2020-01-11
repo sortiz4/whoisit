@@ -15,7 +15,7 @@ class HistoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Map the history to a list of widgets
-    var widgets = history.map(
+    final widgets = history.map(
       (domain) => ListTile(
         leading: Icon(Icons.restore),
         title: Text(domain),
