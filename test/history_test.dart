@@ -1,7 +1,8 @@
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:whoisit/history.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   group('History', () {
     var history = History();
 

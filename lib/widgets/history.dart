@@ -17,11 +17,13 @@ class HistoryView extends StatelessWidget {
     // Map the history to a list of widgets
     var widgets = <Widget>[];
     for(var domain in history) {
-      widgets.add(ListTile(
-        leading: Icon(Icons.restore),
-        title: Text(domain),
-        onTap: () => onTap(domain),
-      ));
+      widgets.add(
+        ListTile(
+          leading: Icon(Icons.restore),
+          title: Text(domain),
+          onTap: () => onTap(domain),
+        )
+      );
     }
 
     // Display the list in reverse (most recent)

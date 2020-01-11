@@ -17,7 +17,7 @@ class SearchBar extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBar> {
-  final double _alignment = 14.0;
+  final double _alignment = 15.0;
   final double _elevation = 2.0;
   final double _padding = 10.0;
 
@@ -26,7 +26,12 @@ class _SearchBarState extends State<SearchBar> {
   Widget get _suffixIcon {
     if(widget.controller.text.length > 0) {
       return GestureDetector(
-        onTap: () => setState(() => widget.controller.clear()),
+        onTap: () {
+          WidgetsBinding
+            .instance
+            .addPostFrameCallback((_) => widget.controller.clear());
+          setState(() {});
+        },
         child: Icon(Icons.clear),
       );
     }

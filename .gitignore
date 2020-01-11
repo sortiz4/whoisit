@@ -1,7 +1,7 @@
 *.iml
 *.lock
 /.dart_tool
-/.flutter-plugins
+/.flutter*
 /.idea
 /.packages
 /.pub

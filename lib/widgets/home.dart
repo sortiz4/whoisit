@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
   /// response card will be displayed upon a successful query, otherwise a
   /// status indicator will be displayed revealing the type of error. Note
   /// that only successful queries will be added to the search history.
-  void onSearch(String query) async {
+  Future<void> onSearch(String query) async {
     query = query.toLowerCase().trim();
 
     if(query.length > 0) {
@@ -150,5 +150,11 @@ class _HomeState extends State<Home> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 }
