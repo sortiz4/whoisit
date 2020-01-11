@@ -15,23 +15,18 @@ class HistoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Map the history to a list of widgets
-    var widgets = <Widget>[];
-    for(var domain in history) {
-      widgets.add(
-        ListTile(
-          leading: Icon(Icons.restore),
-          title: Text(domain),
-          onTap: () => onTap(domain),
-        )
-      );
-    }
+    var widgets = history.map(
+      (domain) => ListTile(
+        leading: Icon(Icons.restore),
+        title: Text(domain),
+        onTap: () => onTap(domain),
+      )
+    );
 
     // Display the list in reverse (most recent)
-    return Scrollbar(
-      child: ListView(
-        padding: EdgeInsets.all(0.0),
-        children: widgets.reversed.toList(),
-      ),
+    return ListView(
+      padding: EdgeInsets.all(0.0),
+      children: widgets.toList().reversed.toList(),
     );
   }
 }

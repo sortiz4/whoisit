@@ -46,31 +46,31 @@ class _HomeState extends State<Home> {
 
   /// The view getter returns the view associated with the active tab.
   Widget get _view {
-    if(_activeTab == _searchTab) {
-      return _searchView;
-    }
-    return _historyView;
+    return _activeTab == _searchTab ? (
+      _searchView
+    ) : (
+      _historyView
+    );
   }
 
   /// The history view will only display a non-empty search history. Otherwise,
   /// a status indicator will be displayed revealing an empty search history.
   Widget get _historyView {
-    if(_history.length == 0) {
-      return EmptyHistoryStatus();
-    }
-    return HistoryView(
-      history: _history,
-      onTap: onRecall,
+    return _history.length != 0 ? (
+      HistoryView(history: _history, onTap: onRecall)
+    ) : (
+      EmptyHistoryStatus()
     );
   }
 
   /// View alignment is determined by the type of view. Status and progress
   /// indicators are centered - all other views are top-left justified.
   Alignment get _alignment {
-    if(_view is Status || _view is ProgressIndicator) {
-      return Alignment.center;
-    }
-    return Alignment.topLeft;
+    return _view is Status || _view is ProgressIndicator ? (
+      Alignment.center
+    ) : (
+      Alignment.topLeft
+    );
   }
 
   /// Automatically switches to the search tab and executes a WHOIS query if

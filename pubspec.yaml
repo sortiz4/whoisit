@@ -1,5 +1,5 @@
 name: whoisit
-version: 1.2.0+3
+version: 1.4.0+4
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -13,7 +13,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  test: ^1.9.4
 
 flutter:
   fonts:

@@ -24,19 +24,22 @@ class _SearchBarState extends State<SearchBar> {
   /// A tappable clear icon will appear when the search field is non-empty.
   /// Tapping the icon will clear the search field and remove the icon.
   Widget get _suffixIcon {
-    if(widget.controller.text.length > 0) {
-      return GestureDetector(
-        onTap: () {
+    return widget.controller.text.length > 0 ? (
+      GestureDetector(
+        onTap: () => (
           WidgetsBinding
             .instance
-            .addPostFrameCallback((_) => widget.controller.clear());
-          setState(() {});
-        },
+            .addPostFrameCallback((_) => widget.controller.clear())
+        ),
         child: Icon(Icons.clear),
-      );
-    }
-    return null;
+      )
+    ) : (
+      null
+    );
   }
+
+  /// Rebuilds the search tree when a change is made.
+  void onChange() => setState(() {});
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +67,22 @@ class _SearchBarState extends State<SearchBar> {
               prefixIcon: Icon(Icons.search),
               suffixIcon: _suffixIcon,
             ),
-            onChanged: (_) => setState(() {}),
             onSubmitted: widget.onSubmitted,
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    widget.controller.addListener(onChange);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(onChange);
+    super.dispose();
   }
 }

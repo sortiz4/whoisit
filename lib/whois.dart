@@ -57,10 +57,13 @@ class Whois {
 
     // Decode the buffer, trim the surrounding blank lines, remove the trailing
     // whitespace at the end of each line, and replace tabs with four spaces
-    var response = Utf8Decoder().convert(buffer);
-    response = response.replaceAll(_surrounding, '');
-    response = response.replaceAll(_trailing, '');
-    response = response.replaceAll(_tabs, '    ');
+    var response = (
+      Utf8Decoder()
+        .convert(buffer)
+        .replaceAll(_surrounding, '')
+        .replaceAll(_trailing, '')
+        .replaceAll(_tabs, '    ')
+    );
     return Whois._internal('$domain', server, response);
   }
 }
