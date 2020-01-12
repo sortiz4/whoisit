@@ -15,7 +15,7 @@ class History extends SetBase<String> {
   Set<String> _history = Set();
 
   /// The history file.
-  File file;
+  File _file;
 
   /// Locates an existing history file or creates a new one.
   static Future<File> _getFile() async {
@@ -43,7 +43,7 @@ class History extends SetBase<String> {
     if(file != null) {
       // Load the history file into the history set
       history.addAll(await file.readAsLines());
-      history.file = file;
+      history._file = file;
     }
     return history;
   }
@@ -59,8 +59,8 @@ class History extends SetBase<String> {
     _history.add(value);
 
     // The history file must be completely overwritten with every change
-    if(file != null) {
-      file.writeAsString(_history.join('\n'));
+    if(_file != null) {
+      _file.writeAsString(_history.join('\n'));
     }
 
     // This method always changes the history set
