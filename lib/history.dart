@@ -17,19 +17,7 @@ class History extends SetBase<String> {
   /// The history file.
   File file;
 
-  /// Loads the history file from storage.
-  static Future<History> fromStorage() async {
-    final file = await _getFile();
-    final history = History();
-    if(file != null) {
-      // Load the history file into the history set
-      history.addAll(await file.readAsLines());
-      history.file = file;
-    }
-    return history;
-  }
-
-  /// Locates an existing history a file or creates a new one.
+  /// Locates an existing history file or creates a new one.
   static Future<File> _getFile() async {
     var location;
     try {
@@ -46,6 +34,18 @@ class History extends SetBase<String> {
     } on FileSystemException {
       return null;
     }
+  }
+
+  /// Loads the history from storage.
+  static Future<History> fromStorage() async {
+    final file = await _getFile();
+    final history = History();
+    if(file != null) {
+      // Load the history file into the history set
+      history.addAll(await file.readAsLines());
+      history.file = file;
+    }
+    return history;
   }
 
   /// Adds the `value` to the history set and updates the history file. If the

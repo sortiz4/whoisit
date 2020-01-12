@@ -38,6 +38,11 @@ class _HomeState extends State<Home> {
   /// The active tab index applies to the bottom navigation bar.
   int _activeTab = _searchTab;
 
+  /// The user's search history will be updated upon successful WHOIS queries.
+  History get _history {
+    return widget.history;
+  }
+
   /// The view getter returns the view associated with the active tab.
   Widget get _view {
     return _activeTab == _searchTab ? (
@@ -52,11 +57,6 @@ class _HomeState extends State<Home> {
     if(_activeTab == _searchTab) {
       _searchView = child;
     }
-  }
-
-  /// The user's search history will be updated upon successful WHOIS queries.
-  History get _history {
-    return widget.history;
   }
 
   /// The history view will only display a non-empty search history. Otherwise,

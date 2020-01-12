@@ -39,7 +39,9 @@ class _SearchBarState extends State<SearchBar> {
   }
 
   /// Rebuilds the search tree when a change is made.
-  void onChange() => setState(() {});
+  void onChange() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
