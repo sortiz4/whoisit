@@ -17,4 +17,4 @@ Once these requirements have been met, simply clone the repository and execute
 `py setup.py -f` (this will download the required fonts). Once completed, the
 application can be compiled by executing `flutter build apk --release`.
 
-[1]: https://play.google.com/store/apps/details?id=me.stevenortiz.whoisit "Whoisit"
+[1]: https://play.google.com/store/apps/details?id=me.stevenortiz.whoisit
