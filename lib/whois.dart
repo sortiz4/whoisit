@@ -18,10 +18,10 @@ class Whois {
     final extension = domain.extension;
     try {
       return await _resolve(extension);
-    } on SocketException catch(exc) {
+    } on SocketException catch (exc) {
       final parts = extension.split('.');
-      for(final i in Iterable.generate(parts.length)) {
-        if(i > 0) {
+      for (final i in Iterable.generate(parts.length)) {
+        if (i > 0) {
           try {
             return await _resolve(parts.sublist(i).join('.'));
           } on SocketException {}
@@ -50,7 +50,7 @@ class Whois {
 
     // Reduce the socket to a list of integers (code points)
     final buffer = <int>[];
-    await for(final chunk in client) {
+    await for (final chunk in client) {
       buffer.addAll(chunk);
     }
     client.destroy();
@@ -77,13 +77,13 @@ class _Domain {
   /// will be managed by the WHOIS client.
   _Domain(String handle) {
     // Reject obvious pattern mismatches
-    if(!_pattern.hasMatch(handle)) {
+    if (!_pattern.hasMatch(handle)) {
       throw FormatException('Invalid input format');
     }
 
     // Attempt to separate the handle
     final parts = handle.split('.');
-    if(parts.length >= 2) {
+    if (parts.length >= 2) {
       name = parts[0];
       extension = parts.sublist(1).join('.');
     } else {

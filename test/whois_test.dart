@@ -22,21 +22,21 @@ void main() {
     const server = 'whois-servers.net';
 
     test('fails to parse bad handles', () {
-      for(final handle in badHandles) {
+      for (final handle in badHandles) {
         // Format exceptions should be thrown by the domain parser
         expect(Whois.query(handle), throwsFormatException);
       }
     });
 
     test('fails to query bad domains', () {
-      for(final domain in badDomains) {
+      for (final domain in badDomains) {
         // Socket exceptions should be thrown upon resolving the WHOIS server
         expect(Whois.query(domain), throwsA(isInstanceOf<SocketException>()));
       }
     });
 
     test('queries good domains', () async {
-      for(final domain in goodDomains) {
+      for (final domain in goodDomains) {
         // Responses should be non-empty
         final whois = await Whois.query(domain);
         expect(whois, isInstanceOf<Whois>());
@@ -45,14 +45,14 @@ void main() {
     });
 
     test('domain matches handle', () async {
-      for(final domain in goodDomains) {
+      for (final domain in goodDomains) {
         final whois = await Whois.query(domain);
         expect(whois.domain, equals(domain));
       }
     });
 
     test('server matches reference', () async {
-      for(final domain in goodDomains) {
+      for (final domain in goodDomains) {
         final whois = await Whois.query(domain);
         expect(whois.server, endsWith('.$server'));
       }

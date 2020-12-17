@@ -40,7 +40,7 @@ class History extends SetBase<String> {
   static Future<History> fromStorage() async {
     final file = await _getFile();
     final history = History();
-    if(file != null) {
+    if (file != null) {
       // Load the history file into the history set
       history.addAll(await file.readAsLines());
       history._file = file;
@@ -53,13 +53,13 @@ class History extends SetBase<String> {
   @override
   bool add(String value) {
     // Update the history set to reflect the order of search queries
-    if(_history.contains(value)) {
+    if (_history.contains(value)) {
       _history.remove(value);
     }
     _history.add(value);
 
     // The history file must be completely overwritten with every change
-    if(_file != null) {
+    if (_file != null) {
       _file.writeAsString(_history.join('\n'));
     }
 

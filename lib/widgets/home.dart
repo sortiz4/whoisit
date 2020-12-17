@@ -54,7 +54,7 @@ class _HomeState extends State<Home> {
 
   /// The view setter only applies when the search tab is active.
   set _view(Widget child) {
-    if(_activeTab == _searchTab) {
+    if (_activeTab == _searchTab) {
       _searchView = child;
     }
   }
@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
   Future<void> onSearch(String query) async {
     query = query.toLowerCase().trim();
 
-    if(query.length > 0) {
+    if (query.length > 0) {
       // Update the tab before querying
       _activeTab = _searchTab;
       try {
@@ -112,7 +112,7 @@ class _HomeState extends State<Home> {
 
   /// Only navigates when the given tab is different from the active tab.
   void onNavigate(int tab) {
-    if(_activeTab != tab) {
+    if (_activeTab != tab) {
       setState(() => _activeTab = tab);
     }
   }
