@@ -1,7 +1,7 @@
 # Whoisit
-Whoisit is a completely free and open source WHOIS client for Android with the
-goal of providing a more private domain name searching experience. All queries
-are sent directly to the most appropriate WHOIS server and no one else.
+Whoisit is a completely free and open source WHOIS client for Android that
+provides a more private domain name searching experience. All queries are sent
+directly to the most appropriate WHOIS server and no one else.
 
 Whoisit is available on the [Google Play Store][1].
 
