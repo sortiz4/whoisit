@@ -11,7 +11,7 @@ Those seeking to compile must have...
 - Flutter SDK 2.2
 - Android Studio 4.2
 - Android SDK 30
-- Python 3
+- Python 3.8
 
 Once these requirements have been met, simply clone the repository and execute
 `py setup.py -f` (this will download the required fonts). Once completed, the
