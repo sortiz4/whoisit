@@ -24,7 +24,8 @@ class Whois {
         if (i > 0) {
           try {
             return await _resolve(parts.sublist(i).join('.'));
-          } on SocketException {}
+          } on SocketException {
+          }
         }
       }
       throw exc;
@@ -41,7 +42,7 @@ class Whois {
   /// instance of `Whois`. The `handle` should be a trimmed and normalized
   /// host name.
   static Future<Whois> query(String handle) async {
-    final domain = _Domain(handle);
+    final domain = _Domain.parse(handle);
 
     // Connect to and query the appropriate WHOIS server
     final client = await _connect(domain);
@@ -70,25 +71,24 @@ class Whois {
 
 class _Domain {
   static final _pattern = RegExp(r'^[-\w.]+$');
-  String name, extension;
+  final String name, extension;
+
+  _Domain._internal(this.name, this.extension);
 
   /// Separates the `handle` into a `name` and `extension`. The `handle` should
   /// be a trimmed and normalized host name. Serious problems with the `handle`
   /// will be managed by the WHOIS client.
-  _Domain(String handle) {
+  static _Domain parse(String handle) {
     // Reject obvious pattern mismatches
-    if (!_pattern.hasMatch(handle)) {
-      throw FormatException('Invalid input format');
-    }
+    if (_pattern.hasMatch(handle)) {
+      final parts = handle.split('.');
 
-    // Attempt to separate the handle
-    final parts = handle.split('.');
-    if (parts.length >= 2) {
-      name = parts[0];
-      extension = parts.sublist(1).join('.');
-    } else {
-      throw FormatException('Invalid domain format');
+      // Attempt to separate the handle
+      if (parts.length >= 2) {
+        return _Domain._internal(parts.first, parts.sublist(1).join('.'));
+      }
     }
+    throw FormatException('Invalid domain format');
   }
 
   /// Returns the `name` and `extension` joined with a dot.

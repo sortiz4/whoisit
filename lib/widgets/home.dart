@@ -12,7 +12,7 @@ import 'package:whoisit/widgets/whois.dart';
 class Home extends StatefulWidget {
   final History history;
 
-  Home({@required this.history});
+  Home({required this.history});
 
   @override
   _HomeState createState() {
@@ -96,10 +96,12 @@ class _HomeState extends State<Home> {
 
         // Wait for the response and update
         final whois = await Whois.query(query);
-        setState(() {
-          _view = WhoisCard(whois);
-          _history.add(whois.domain);
-        });
+        setState(
+          () {
+            _view = WhoisCard(whois);
+            _history.add(whois.domain);
+          }
+        );
       } on FormatException {
         setState(() => _view = ErrorStatus('Invalid domain format'));
       } on SocketException {
@@ -126,7 +128,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: [
           SearchBar(
@@ -142,16 +143,17 @@ class _HomeState extends State<Home> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).bottomAppBarColor,
         currentIndex: _activeTab,
         onTap: onNavigate,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text('Search'),
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            title: Text('History'),
+            label: 'History',
           ),
         ],
       ),

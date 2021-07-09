@@ -6,13 +6,10 @@ from urllib import request
 from zipfile import ZipFile
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-
-class Fonts:
-    HELP = 'Downloads the font assets.'
-    NAMES = ['RobotoMono-Regular.ttf']
-    DIR = os.path.join(BASE_DIR, 'fonts')
-    URL = 'https://fonts.google.com/download?family=Roboto%20Mono'
+FONT_HELP = 'Downloads the font assets.'
+FONT_NAMES = ['RobotoMono-Regular.ttf']
+FONT_DIR = os.path.join(BASE_DIR, 'fonts')
+FONT_URL = 'https://fonts.google.com/download?family=Roboto%20Mono'
 
 
 class Command:
@@ -20,7 +17,7 @@ class Command:
 
     def __init__(self):
         parser = argparse.ArgumentParser(description=self.help)
-        parser.add_argument('-f', '--fonts', action='store_true', help=Fonts.HELP)
+        parser.add_argument('-f', '--fonts', action='store_true', help=FONT_HELP)
         self.args = parser.parse_args()
 
     def handle(self):
@@ -30,18 +27,18 @@ class Command:
     @classmethod
     def fonts(cls):
         # Make the directory if it doesn't exist
-        if not os.path.exists(Fonts.DIR):
-            os.makedirs(Fonts.DIR)
+        if not os.path.exists(FONT_DIR):
+            os.makedirs(FONT_DIR)
 
         # Download the font archive to memory
-        buffer = request.urlopen(Fonts.URL).read()
+        buffer = request.urlopen(FONT_URL).read()
         archive = BytesIO(buffer)
 
         # Extract the fonts
         archive = ZipFile(archive)
-        for name in Fonts.NAMES:
-            buffer = archive.read(name)
-            path = os.path.join(Fonts.DIR, name)
+        for name in FONT_NAMES:
+            buffer = archive.read(f'static/{name}')
+            path = os.path.join(FONT_DIR, name)
             with open(path, 'wb') as font:
                 font.write(buffer)
 

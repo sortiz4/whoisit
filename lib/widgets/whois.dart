@@ -23,15 +23,10 @@ class WhoisCard extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.all(_padding),
-              color: Colors.grey[800],
+              color: Theme.of(context).bottomAppBarColor,
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  whois.server,
-                  style: Theme.of(context).textTheme.button.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
+                child: Text(whois.server),
               ),
             ),
             Container(

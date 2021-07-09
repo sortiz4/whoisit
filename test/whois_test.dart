@@ -4,17 +4,17 @@ import 'package:whoisit/whois.dart';
 
 void main() {
   group('Whois', () {
-    const badHandles = <String>[
+    const badHandles = [
       '?', // Illegal characters
       'a', // Missing dot separator
     ];
-    const badDomains = <String>[
+    const badDomains = [
       '.', // Empty top-level extension
       '.-', // Incorrect top-level extension
       '...', // Empty second-level extension
       'a.b.c.d', // Non-existent third-level extension
     ];
-    const goodDomains = <String>[
+    const goodDomains = [
       'google.com', // Good top-level extension
       'jobs.ac.uk', // Good second-level extension
       'pub.dartlang.org', // Bad query but good extension

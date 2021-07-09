@@ -6,7 +6,7 @@ void main() {
     final history = History();
 
     // The history only cares about uniqueness
-    const queries = <String>['a', 'b', 'c'];
+    const queries = ['a', 'b', 'c'];
 
     tearDown(() {
       // Tests depend on a fresh instance

@@ -5,10 +5,7 @@ class SearchBar extends StatefulWidget {
   final TextEditingController controller;
   final ValueChanged<String> onSubmitted;
 
-  SearchBar({
-    @required this.controller,
-    @required this.onSubmitted,
-  });
+  SearchBar({required this.controller, required this.onSubmitted});
 
   @override
   _SearchBarState createState() {
@@ -23,16 +20,9 @@ class _SearchBarState extends State<SearchBar> {
 
   /// A tappable clear icon will appear when the search field is non-empty.
   /// Tapping the icon will clear the search field and remove the icon.
-  Widget get _suffixIcon {
+  Widget? get _suffixIcon {
     return widget.controller.text.length > 0 ? (
-      GestureDetector(
-        onTap: () => (
-          WidgetsBinding
-            .instance
-            .addPostFrameCallback((_) => widget.controller.clear())
-        ),
-        child: Icon(Icons.clear),
-      )
+      GestureDetector(onTap: onClear, child: Icon(Icons.clear))
     ) : (
       null
     );
@@ -43,10 +33,15 @@ class _SearchBarState extends State<SearchBar> {
     setState(() {});
   }
 
+  /// Clears the search controller.
+  void onClear() {
+    WidgetsBinding.instance?.addPostFrameCallback((_) => widget.controller.clear());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).bottomAppBarColor,
       elevation: _elevation,
       child: Container(
         padding: EdgeInsets.only(
@@ -78,8 +73,8 @@ class _SearchBarState extends State<SearchBar> {
 
   @override
   void initState() {
-    widget.controller.addListener(onChange);
     super.initState();
+    widget.controller.addListener(onChange);
   }
 
   @override

@@ -15,23 +15,19 @@ class History extends SetBase<String> {
   Set<String> _history = Set();
 
   /// The history file.
-  File _file;
+  File? _file;
 
   /// Locates an existing history file or creates a new one.
-  static Future<File> _getFile() async {
-    var location;
+  static Future<File?> _getFile() async {
     try {
       // Compute the full path of the history file
       final directory = await Provider.getApplicationDocumentsDirectory();
-      location = Path.join(directory?.path, _name);
-    } on MissingPluginException {
-      return null;
-    }
 
-    try {
       // Create the file (nondestructive)
-      return await File(location).create();
+      return await File(Path.join(directory.path, _name)).create();
     } on FileSystemException {
+      return null;
+    } on MissingPluginException {
       return null;
     }
   }
@@ -59,9 +55,7 @@ class History extends SetBase<String> {
     _history.add(value);
 
     // The history file must be completely overwritten with every change
-    if (_file != null) {
-      _file.writeAsString(_history.join('\n'));
-    }
+    _file?.writeAsString(_history.join('\n'));
 
     // This method always changes the history set
     return true;
@@ -83,17 +77,17 @@ class History extends SetBase<String> {
   }
 
   @override
-  bool contains(Object element) {
+  bool contains(Object? element) {
     return _history.contains(element);
   }
 
   @override
-  String lookup(Object element) {
+  String? lookup(Object? element) {
     return _history.lookup(element);
   }
 
   @override
-  bool remove(Object value) {
+  bool remove(Object? value) {
     return _history.remove(value);
   }
 

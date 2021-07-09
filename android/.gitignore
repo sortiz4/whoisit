@@ -7,8 +7,9 @@
 /captures
 /gen
 /gradle
+/gradlew
+/gradlew.bat
+/key.properties
+/local.properties
+/settings_aar.gradle
 GeneratedPluginRegistrant.java
-gradlew
-gradlew.bat
-key.properties
-local.properties

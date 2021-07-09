@@ -7,10 +7,7 @@ class Status extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  Status({
-    @required this.icon,
-    @required this.text,
-  });
+  Status({required this.icon, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +20,13 @@ class Status extends StatelessWidget {
             padding: EdgeInsets.all(_padding),
             child: Icon(
               icon,
-              size: Theme.of(context).textTheme.display2.fontSize,
-              color: Theme.of(context).textTheme.body2.color,
+              size: Theme.of(context).textTheme.headline3?.fontSize,
+              color: Theme.of(context).textTheme.bodyText1?.color,
             ),
           ),
           Text(
             text,
-            style: Theme.of(context).textTheme.body2,
+            style: Theme.of(context).textTheme.bodyText1,
           ),
         ],
       ),

@@ -8,9 +8,9 @@ Whoisit is available on the [Google Play Store][1].
 ## Compilation
 Those seeking to compile must have...
 
-- Flutter SDK 1.0
-- Android Studio 3.2
-- Android SDK 28
+- Flutter SDK 2.2
+- Android Studio 4.2
+- Android SDK 30
 - Python 3
 
 Once these requirements have been met, simply clone the repository and execute

@@ -7,26 +7,22 @@ class HistoryView extends StatelessWidget {
   final History history;
   final ValueSetter<String> onTap;
 
-  HistoryView({
-    @required this.history,
-    @required this.onTap,
-  });
+  HistoryView({required this.history, required this.onTap});
+
+  /// Creates a `ListTile` from a `domain`.
+  Widget createTile(String domain) {
+    return ListTile(
+      leading: Icon(Icons.restore),
+      title: Text(domain),
+      onTap: () => onTap(domain),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Map the history to a list of widgets
-    final widgets = history.map(
-      (domain) => ListTile(
-        leading: Icon(Icons.restore),
-        title: Text(domain),
-        onTap: () => onTap(domain),
-      )
-    );
-
-    // Display the list in reverse (most recent)
     return ListView(
       padding: EdgeInsets.all(0.0),
-      children: widgets.toList().reversed.toList(),
+      children: history.map(createTile).toList().reversed.toList(),
     );
   }
 }
