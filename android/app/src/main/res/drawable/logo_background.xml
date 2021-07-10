@@ -8,18 +8,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:pathData="M0,0h512v512h-512z">
         <aapt:attr name="android:fillColor">
-            <gradient
-                android:type="linear"
-                android:startX="512"
-                android:startY="512"
-                android:endX="0"
-                android:endY="0">
-                <item
-                    android:color="#FF007DE6"
-                    android:offset="0" />
-                <item
-                    android:color="#FF50D2FF"
-                    android:offset="1" />
+            <gradient android:type="linear" android:startX="512" android:startY="512" android:endX="0" android:endY="0">
+                <item android:color="#FF007DE6" android:offset="0" />
+                <item android:color="#FF50D2FF" android:offset="1" />
             </gradient>
         </aapt:attr>
     </path>
