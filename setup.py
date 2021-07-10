@@ -13,7 +13,7 @@ FONT_URL = 'https://fonts.google.com/download?family=Roboto%20Mono'
 
 
 class Command:
-    help = 'Downloads the assets required by this application.'
+    help = 'Downloads the required assets.'
 
     def __init__(self):
         parser = argparse.ArgumentParser(description=self.help)
