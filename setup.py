@@ -6,41 +6,56 @@ from urllib import request
 from zipfile import ZipFile
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FONT_HELP = 'Downloads the font assets.'
-FONT_NAMES = ['RobotoMono-Regular.ttf']
-FONT_DIR = os.path.join(BASE_DIR, 'fonts')
 FONT_URL = 'https://fonts.google.com/download?family=Roboto%20Mono'
+FONT_DEST = os.path.join(BASE_DIR, 'fonts')
+FONT_NAMES = ['RobotoMono-Regular.ttf']
 
 
 class Command:
-    help = 'Downloads the required assets.'
 
     def __init__(self):
-        parser = argparse.ArgumentParser(description=self.help)
-        parser.add_argument('-f', '--fonts', action='store_true', help=FONT_HELP)
+        # Construct the argument parser
+        options = {
+            'description': 'Downloads the required assets.',
+        }
+        parser = argparse.ArgumentParser(**options)
+
+        # Add the arguments to the parser
+        arguments = [
+            [
+                [
+                    '-f',
+                    '--fonts',
+                ],
+                {
+                    'action': 'store_true',
+                    'help': 'Downloads the font assets.',
+                },
+            ],
+        ]
+        for argument in arguments:
+            parser.add_argument(*argument[0], **argument[1])
+
+        # Parse the arguments from the system
         self.args = parser.parse_args()
 
     def handle(self):
+        def fonts():
+            # Make the directory if it doesn't exist
+            if not os.path.exists(FONT_DEST):
+                os.makedirs(FONT_DEST)
+
+            # Download the font archive to memory
+            archive = ZipFile(BytesIO(request.urlopen(FONT_URL).read()))
+
+            # Extract the fonts
+            for name in FONT_NAMES:
+                content = archive.read(f'static/{name}')
+                with open(os.path.join(FONT_DEST, name), 'wb') as font:
+                    font.write(content)
+
         if self.args.fonts:
-            self.fonts()
-
-    @classmethod
-    def fonts(cls):
-        # Make the directory if it doesn't exist
-        if not os.path.exists(FONT_DIR):
-            os.makedirs(FONT_DIR)
-
-        # Download the font archive to memory
-        buffer = request.urlopen(FONT_URL).read()
-        archive = BytesIO(buffer)
-
-        # Extract the fonts
-        archive = ZipFile(archive)
-        for name in FONT_NAMES:
-            buffer = archive.read(f'static/{name}')
-            path = os.path.join(FONT_DIR, name)
-            with open(path, 'wb') as font:
-                font.write(buffer)
+            fonts()
 
 
 if __name__ == '__main__':
