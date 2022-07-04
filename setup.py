@@ -13,7 +13,7 @@ FONT_DEST_PATH = os.path.join(BASE_PATH, 'fonts')
 
 class Command:
 
-    def __init__(self):
+    def __init__(self) -> None:
         # Construct the argument parser
         options = {
             'description': 'Downloads the required assets.',
@@ -39,8 +39,8 @@ class Command:
         # Parse the arguments from the system
         self.args = parser.parse_args()
 
-    def handle(self):
-        def fonts():
+    def handle(self) -> None:
+        def fonts() -> None:
             # Make the directory if it doesn't exist
             if not os.path.exists(FONT_DEST_PATH):
                 os.makedirs(FONT_DEST_PATH)
