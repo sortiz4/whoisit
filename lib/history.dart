@@ -36,11 +36,13 @@ class History extends SetBase<String> {
   static Future<History> fromStorage() async {
     final file = await _getFile();
     final history = History();
+
     if (file != null) {
       // Load the history file into the history set
       history.addAll(await file.readAsLines());
       history._file = file;
     }
+
     return history;
   }
 

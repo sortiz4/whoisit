@@ -5,11 +5,6 @@ from io import BytesIO
 from urllib import request
 from zipfile import ZipFile
 
-BASE_PATH = os.path.dirname(os.path.abspath(__file__))
-FONT_SRC_URL = 'https://fonts.google.com/download?family=Roboto%20Mono'
-FONT_SRC_NAMES = ['RobotoMono-Regular.ttf']
-FONT_DEST_PATH = os.path.join(BASE_PATH, 'fonts')
-
 
 class Command:
 
@@ -39,19 +34,25 @@ class Command:
         # Parse the arguments from the system
         self.args = parser.parse_args()
 
-    def handle(self) -> None:
+    def run(self) -> None:
+        base_path = os.path.dirname(os.path.abspath(__file__))
+
         def fonts() -> None:
+            font_url = 'https://fonts.google.com/download?family=Roboto%20Mono'
+            font_path = os.path.join(base_path, 'fonts')
+            font_names = ['RobotoMono-Regular.ttf']
+
             # Make the directory if it doesn't exist
-            if not os.path.exists(FONT_DEST_PATH):
-                os.makedirs(FONT_DEST_PATH)
+            if not os.path.exists(font_path):
+                os.makedirs(font_path)
 
             # Download the font archive to memory
-            archive = ZipFile(BytesIO(request.urlopen(FONT_SRC_URL).read()))
+            archive = ZipFile(BytesIO(request.urlopen(font_url).read()))
 
             # Extract the fonts
-            for name in FONT_SRC_NAMES:
+            for name in font_names:
                 content = archive.read(f'static/{name}')
-                with open(os.path.join(FONT_DEST_PATH, name), 'wb') as font:
+                with open(os.path.join(font_path, name), 'wb') as font:
                     font.write(content)
 
         if self.args.fonts:
@@ -59,4 +60,4 @@ class Command:
 
 
 if __name__ == '__main__':
-    Command().handle()
+    Command().run()

@@ -58,6 +58,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     final systemBrightness = MediaQueryData.fromWindow(WidgetsBinding.instance!.window).platformBrightness;
     final brightness = systemBrightness == Brightness.light ? Brightness.dark : Brightness.light;
     final color = systemBrightness == Brightness.light ? trimColorLight : trimColorDark;
+
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
         statusBarColor: color,

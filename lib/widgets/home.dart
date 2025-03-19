@@ -90,12 +90,14 @@ class _HomeState extends State<Home> {
     if (query.length > 0) {
       // Update the tab before querying
       _activeTab = _searchTab;
+
       try {
         // Start the progress indicator
         setState(() => _view = CircularProgressIndicator());
 
         // Wait for the response and update
         final whois = await Whois.query(query);
+
         setState(
           () {
             _view = WhoisCard(whois);

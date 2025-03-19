@@ -16,10 +16,12 @@ class Whois {
   /// all possibilities are exhausted.
   static Future<Socket> _connect(_Domain domain) async {
     final extension = domain.extension;
+
     try {
       return await _resolve(extension);
     } on SocketException catch (exc) {
       final parts = extension.split('.');
+
       for (final i in Iterable.generate(parts.length)) {
         if (i > 0) {
           try {
@@ -28,6 +30,7 @@ class Whois {
           }
         }
       }
+
       throw exc;
     }
   }
@@ -65,6 +68,7 @@ class Whois {
         .replaceAll(_trailing, '')
         .replaceAll(_tabs, '    ')
     );
+
     return Whois._internal('$domain', server, response);
   }
 }
@@ -88,6 +92,7 @@ class _Domain {
         return _Domain._internal(parts.first, parts.sublist(1).join('.'));
       }
     }
+
     throw FormatException('Invalid domain format');
   }
 
